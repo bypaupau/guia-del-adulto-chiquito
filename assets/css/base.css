@@ -1,0 +1,84 @@
+/* ══════════════════════════════════════════════════════════════
+   BASE · reset, cristal y piezas compartidas
+   ══════════════════════════════════════════════════════════════ */
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+html{-webkit-text-size-adjust:100%}
+
+body{
+  background:var(--papel);
+  color:var(--tinta);
+  font-family:var(--letra);
+  font-size:16px;line-height:1.55;
+  overflow:hidden;
+}
+
+svg{display:block}
+
+/* ── El cristal ──
+   Una sola receta para todo lo que flota: panel, burbuja, tarjeta
+   fijada y avisos. Si el navegador no sabe desenfocar, se pone
+   casi opaco para que siga leyéndose (mira el @supports de abajo). */
+.vidrio{
+  background:var(--vidrio);
+  -webkit-backdrop-filter:var(--desenfoque);
+  backdrop-filter:var(--desenfoque);
+  border:1px solid var(--vidrio-borde);
+  box-shadow:var(--sombra),var(--brillo);
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .vidrio{background:rgba(255,255,255,.95)}
+}
+
+/* Botones de solo icono (los de la cabecera del panel) */
+.icono-btn{
+  flex:0 0 auto;width:36px;height:36px;border-radius:50%;
+  border:0;cursor:pointer;display:grid;place-items:center;
+  background:rgba(255,255,255,.5);color:var(--tinta);
+  transition:background .16s,transform .12s;
+}
+.icono-btn:hover{background:rgba(255,255,255,.9)}
+.icono-btn:active{transform:scale(.92)}
+.icono-btn svg{width:16px;height:16px;fill:currentColor}
+/* display:grid gana a [hidden] si no se dice lo contrario */
+.icono-btn[hidden]{display:none}
+.icono-btn[aria-pressed="true"]{background:var(--tinta);color:#fff}
+
+/* Botones de acción de la ficha */
+.boton{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  text-decoration:none;font-weight:700;font-size:.9rem;
+  padding:12px 14px;border-radius:var(--radio);font-family:inherit;
+  border:0;cursor:pointer;color:var(--tinta);
+  transition:transform .1s,box-shadow .16s,background .16s;
+}
+.boton:active{transform:scale(.98)}
+.boton svg{width:16px;height:16px;fill:currentColor;flex:0 0 auto}
+.boton.fuerte{color:#fff;box-shadow:0 4px 14px rgba(45,38,30,.2)}
+.boton.suave{background:rgba(255,255,255,.55);border:1px solid var(--vidrio-borde)}
+.boton.suave:hover{background:rgba(255,255,255,.9)}
+
+.vacio{
+  padding:40px 24px;text-align:center;color:var(--tinta-suave);
+  font-style:italic;font-size:.88rem;
+}
+
+/* Aviso flotante */
+.aviso{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(8px);
+  background:var(--vidrio-fuerte);
+  -webkit-backdrop-filter:var(--desenfoque);backdrop-filter:var(--desenfoque);
+  border:1px solid var(--vidrio-borde);box-shadow:var(--sombra);
+  color:var(--tinta);
+  padding:11px 18px;border-radius:var(--radio);font-size:.85rem;font-weight:700;
+  z-index:900;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+  max-width:min(90vw,420px);text-align:center;
+}
+.aviso.visible{opacity:1;transform:translateX(-50%)}
+
+:focus-visible{outline:2.5px solid #4a90c2;outline-offset:2px;border-radius:8px}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
