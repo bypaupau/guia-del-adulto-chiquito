@@ -25,8 +25,8 @@ GUIA.registrarCiudades([
     porDefecto: true,
     datos: [
       "ciudad",
-      "salud", "comida", "cafe", "super", "transporte",
-      "tramites", "papeleria", "arreglos", "ropa", "escapada"
+      "salud", "comida", "sabor", "cafe", "super", "cuidado",
+      "transporte", "tramites", "papeleria", "arreglos", "ropa", "escapada"
     ]
   }
 
