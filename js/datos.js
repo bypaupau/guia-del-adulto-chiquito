@@ -28,6 +28,15 @@
     };
     var elegido = busca(m.estilo) || G._estilos[0];
     var reserva = busca(m.reserva);
+
+    /* Abriendo el archivo con doble clic no hay cabecera Referer y
+       OpenStreetMap devuelve teselas de "Access blocked". En ese
+       caso arrancamos directamente con el mapa de reserva. */
+    if (elegido && elegido.requiereReferer && location.protocol === "file:" && reserva) {
+      console.info("Guía · sin servidor no se puede usar " + elegido.nombre +
+                   ", uso " + reserva.nombre + ". Sirve la carpeta por http para verlo bien.");
+      elegido = reserva;
+    }
     if (elegido && elegido.parametroClave && !m.clave)
       console.warn('⚠️ Guía · el estilo de mapa "' + elegido.id + '" necesita una clave. ' +
                    'Ponla en data/' + idCiudad + '/ciudad.js (mapa.clave) o elige otro estilo en data/mapas.js.');

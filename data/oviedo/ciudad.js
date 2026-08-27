@@ -10,14 +10,17 @@ GUIA.registrarCiudad({
      "reserva" es a lo que se cambia solo si el primero no responde.
      "clave" solo hace falta si el estilo elegido la pide. */
   mapa: {
-    estilo: "esri-calles",
-    reserva: "esri-gris",
+    estilo: "osm",
+    reserva: "esri-calles",
     clave: ""
   },
 
-  /* Encuadre inicial del mapa. */
-  centro: [43.3619, -5.8494],
-  zoom: 14,
+  /* Encuadre inicial: se abre sobre la Facultad de Informática, que
+     es desde donde va a salir Daniel, en vez de enseñar la ciudad
+     entera con los pines desperdigados. Sube el zoom para acercarte
+     más (15 se ve el barrio, 17 se ve la calle). */
+  centro: [43.356500, -5.851500],
+  zoom: 15,
 
   /* Se añade al buscar en Google Maps un sitio que no tiene
      coordenadas propias (cadenas con muchos locales). */

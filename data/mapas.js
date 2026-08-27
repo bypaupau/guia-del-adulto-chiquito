@@ -23,25 +23,31 @@
 
 GUIA.registrarEstilosMapa([
 
-  /* ⚠️ OJO: OpenStreetMap exige que el navegador mande la cabecera
-     Referer. Abriendo el archivo con doble clic (file://) no se
-     manda ninguna y las teselas salen con "Access blocked".
-     Funciona bien publicado en GitHub Pages, o en local si lo
-     sirves con  python3 -m http.server  desde esta carpeta. */
+  /* El de serie. Es el mapa con más detalle de los gratuitos: se
+     ven los portales, los comercios y los nombres de calle pequeños,
+     que es justo lo que se echaba de menos con el de Esri. Va poco
+     atenuado a propósito, para no comerse esa información.
+
+     OJO: OpenStreetMap exige que el navegador mande la cabecera
+     Referer, y abriendo el archivo con doble clic (file://) no se
+     manda. Por eso "requiereReferer": en ese caso la aplicación se
+     pasa sola al mapa de reserva. Publicado o servido por http va
+     perfecto. */
   {
     id: "osm",
-    nombre: "OpenStreetMap (solo servido por http)",
+    nombre: "OpenStreetMap",
     base: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    requiereReferer: true,
     maxZoom: 19,
-    atenuar: "saturate(.55) contrast(.92) brightness(1.06)",
-    opacidad: .88,
+    atenuar: "saturate(.78) contrast(.98) brightness(1.02)",
+    opacidad: .95,
     atribucion: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   },
 
-  /* El de serie. Más cálido y beige, pega muy bien con el papel
-     del folleto, y funciona igual con doble clic que publicado:
-     ni clave, ni Referer. Esri no publica unas condiciones tan
-     claras como las de OpenStreetMap, eso sí. */
+  /* El de reserva. Más cálido y beige, pega muy bien con el papel
+     del folleto y funciona igual con doble clic que publicado (ni
+     clave ni Referer), pero tiene bastante menos detalle: a zoom
+     alto se quedan calles sin nombre. */
   {
     id: "esri-calles",
     nombre: "Esri, Calles",
