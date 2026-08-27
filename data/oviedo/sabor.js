@@ -45,7 +45,7 @@ GUIA.registrarSitios("oviedo", [
     direccion: "Calle Isla de Cuba 7, 33011",
     telefono: "984 18 05 32",
     horario: "Todos los días de 9:00 a 21:00",
-    nota: "No es ecuatoriano, pero es lo que más se le acerca en sabores: empanadas, papas rellenas, chicharrones, jugos y repostería. Abre todos los días y tiene terraza. Para llevar también.",
+    nota: "No es ecuatoriano, pero es lo que más se le acerca en sabores: empanadas, papas rellenas, chicharrones, jugos y repostería. Abre todos los días y tiene terraza. Para llevar también. AVISO: Google lo sitúa ahora en C/ Jesús Sáenz de Miera (33010) con el teléfono 984 49 16 50; puede que se hayan mudado o que tengan dos locales. Comprueba antes de ir.",
     fotos: [],
     verificado: "2026-08"
   },
@@ -59,6 +59,19 @@ GUIA.registrarSitios("oviedo", [
     direccion: "Calle El Peso 5, 33009",
     telefono: "603 42 93 88",
     nota: "Arepas, cachapas y jugos tropicales mezclados con cocina asturiana. Está en el casco antiguo, a dos pasos del Fontán, así que te queda de camino cuando bajes al mercado. Tienen opciones sin gluten.",
+    fotos: [],
+    verificado: "2026-08"
+  }
+,
+  {
+    id: "emperatriz",
+    nombre: "Emperatriz Sidrería",
+    subtitulo: "Sidrería asturiana con cocina ecuatoriana",
+    categoria: "sabor",
+    direccion: "Calle Silla del Rey 19, bajo, 33013",
+    telefono: "603 85 17 57",
+    nota: "El descubrimiento: por fuera es una sidrería de barrio y por dentro se come ecuatoriano. Las reseñas dicen que el encebollado es de lo mejor que se come por aquí. 4,7 en Google con 276 opiniones, y el negocio confirmó sus datos hace poco, así que está bien vivo. Ojo con el horario: Google dice que cierra a medianoche pero un directorio da de 11:00 a 16:00 y cierre los martes. Llama antes de ir.",
+    maps: "https://www.google.com/maps/search/?api=1&query=Emperatriz+Sidreria+Calle+Silla+del+Rey+19+Oviedo",
     fotos: [],
     verificado: "2026-08"
   }
