@@ -89,6 +89,20 @@ GUIA.registrarSitios("oviedo", [
     nota: "Para pillar un cargador, un móvil o un portátil usado sin meterte en Wallapop, o para vender algo antes de volverte. Abre de lunes a sábado, mañana y tarde, con cierre al mediodía. A diez minutos andando del centro.",
     fotos: [],
     verificado: "2026-08"
+  },
+
+  {
+    id: "bomatica",
+    nombre: "Bomática",
+    subtitulo: "Móviles, en plena calle Uría",
+    categoria: "arreglos",
+    coords: [43.364299, -5.852265],
+    direccion: "Calle Uría 15, 33003",
+    telefono: "604 83 01 64",
+    horario: "Lunes a viernes de 10:00 a 21:00, sábados de 11:00 a 15:00",
+    nota: "La tienes en la calle principal, sin perderte. Van sobre todo de móviles y de vender iPhone reacondicionado, aunque también tocan tablets y ordenadores. No hace falta cita, el diagnóstico es gratis y dan doce meses de garantía. Si es el portátil lo que te falla, mejor Mr.Computer o IFENO.",
+    fotos: [],
+    verificado: "2026-08"
   }
 
 ]);
