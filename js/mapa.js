@@ -14,11 +14,13 @@
 
   var M = (G.mapa = {});
   var mapa, capaBase, capaEtiquetas, capaRuta, marcadorOrigen, marcadorPaso, reserva, clave;
+  var centroCiudad;                 // para descartar los sitios de fuera al encuadrar
   var marcadores = {};   // id de sitio → marcador
   var fallos = 0, yaCambie = false;
 
   /* ---------- Arranque ---------- */
   M.crear = function (config, estiloConfig) {
+    centroCiudad = config.centro;
     mapa = L.map("mapa", { zoomControl: false, attributionControl: true })
             .setView(config.centro, config.zoom);
 
@@ -146,9 +148,21 @@
   };
 
   /* ---------- Encuadre ---------- */
+  /* Hay sitios que están lejísimos a propósito (el Consulado, en
+     Madrid). Si entraran en el encuadre, filtrar por "Trámites"
+     alejaría el mapa hasta ver media España y no se vería ninguna
+     chincheta de Oviedo. Así que se dejan fuera del encuadre, salvo
+     que sean los únicos que quedan. Siguen pintados en el mapa: solo
+     no mandan sobre el zoom. */
+  var LEJOS_METROS = 60000;
+
   M.encuadrar = function (sitios, relleno) {
-    var puntos = sitios.filter(function (s) { return s.coords; }).map(function (s) { return s.coords; });
-    if (!puntos.length) return;
+    var todos = sitios.filter(function (s) { return s.coords; }).map(function (s) { return s.coords; });
+    if (!todos.length) return;
+    var cerca = (centroCiudad && G.rutas) ? todos.filter(function (c) {
+      return G.rutas.distanciaEntre(c, centroCiudad) <= LEJOS_METROS;
+    }) : todos;
+    var puntos = cerca.length ? cerca : todos;
     mapa.fitBounds(L.latLngBounds(puntos), {
       paddingTopLeft: [(relleno && relleno[0]) || 60, 60],
       paddingBottomRight: [60, (relleno && relleno[1]) || 60],
