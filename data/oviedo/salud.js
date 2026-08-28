@@ -15,6 +15,10 @@
                  pero sin chincheta (cadenas, sitios fuera de Oviedo…).
                  Para sacarlas: añade ?editar al final del enlace de la
                  página y haz clic en el mapa; te copia las coordenadas.
+     aproximada  true si la chincheta está puesta a ojo sobre la
+                 calle porque no encontramos la coordenada exacta.
+                 La ficha lo avisa para no dar por buena una
+                 ubicación que no comprobamos.
      direccion, telefono, horario, web, nota   opcionales.
      maps        enlace propio a Google Maps (solo si no hay coords).
      fotos       ["foto-1.jpg"] → assets/img/oviedo/<id>/foto-1.jpg

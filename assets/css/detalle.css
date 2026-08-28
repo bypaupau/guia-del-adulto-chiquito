@@ -76,6 +76,12 @@
 .datos a{color:inherit}
 
 .acciones{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.aviso-aproximada{
+  align-items:flex-start;gap:9px;margin:2px 0 8px;padding:7px 9px;
+  border-radius:11px;background:rgba(255,255,255,.45);
+  font-size:.72rem;line-height:1.35;color:var(--tinta-media);font-style:italic;
+}
+.aviso-aproximada svg{opacity:.4}
 .verificado{margin-top:12px;font-size:.71rem;color:var(--tinta-suave);font-style:italic;text-align:center}
 
 /* ══════════════════════════════════════════════════════════════

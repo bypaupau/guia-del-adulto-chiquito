@@ -34,6 +34,8 @@
       (sitio.nota ? '<p class="nota">' + G.esc(sitio.nota) + "</p>" : "") +
       '<div class="datos">' +
         fila(G.iconosUI.pin, sitio.direccion) +
+        (sitio.aproximada ? '<div class="aviso-aproximada">' + svg(G.iconosUI.pin) +
+          "<span>La chincheta está puesta a ojo sobre la calle: puede bailar unos metros.</span></div>" : "") +
         (sitio.telefono ? fila(G.iconosUI.telefono,
           '<a href="tel:+34' + G.esc(sitio.telefono.replace(/\s/g, "")) + '">' + G.esc(sitio.telefono) + "</a>", true) : "") +
         (sitio.horario ? fila(G.iconosUI.reloj, sitio.horario) : "") +
