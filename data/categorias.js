@@ -19,7 +19,7 @@
 GUIA.registrarCategorias([
   { id: "salud",      nombre: "Salud",            color: "#C0453A", orden: 1 },
   { id: "comida",     nombre: "Comer",            color: "#C57B2A", orden: 2 },
-  { id: "sabor",      nombre: "Sabor de casa",    color: "#A24BA0", orden: 3 },
+  { id: "sabor",      nombre: "Comida latina",    color: "#A24BA0", orden: 3 },
   { id: "cafe",       nombre: "Cafés y tiendas",  color: "#7C5A45", orden: 4 },
   { id: "super",      nombre: "Súper",            color: "#6C8F3C", orden: 5 },
   { id: "cuidado",    nombre: "Cuidado personal", color: "#4E63A8", orden: 6 },
@@ -28,5 +28,8 @@ GUIA.registrarCategorias([
   { id: "papeleria",  nombre: "Papelería",        color: "#3F8079", orden: 9 },
   { id: "arreglos",   nombre: "Reparaciones",     color: "#5F6B72", orden: 10 },
   { id: "ropa",       nombre: "Ropa",             color: "#A8446F", orden: 11 },
-  { id: "escapada",   nombre: "Escapadas",        color: "#2E6B4F", orden: 12 }
+  { id: "escapada",   nombre: "Escapadas",        color: "#2E6B4F", orden: 12 },
+  { id: "cultura",    nombre: "Cultura",          color: "#6B3FA0", orden: 13 },
+  { id: "ocio",       nombre: "Cine y ocio",      color: "#8A6D1F", orden: 14 },
+  { id: "aire",       nombre: "Aire libre",       color: "#3E7B3E", orden: 15 }
 ]);
