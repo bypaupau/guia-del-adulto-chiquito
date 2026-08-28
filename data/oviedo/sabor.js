@@ -1,9 +1,13 @@
 /* ══════════════════════════════════════════════════════════════
-   SITIOS DE SABOR DE CASA de Oviedo
+   SITIOS DE COMIDA LATINA de Oviedo
    ──────────────────────────────────────────────────────────────
    La página del folleto que dice "y si extraño mi comida
    ecuatoriana". Aquí van los sitios donde comer o comprar lo de
-   allá. Los campos están explicados en salud.js.
+   allá: ecuatoriano, colombiano, venezolano y las tiendas donde
+   encontrar el producto de casa. El id de la categoría sigue
+   siendo "sabor" para no romper los enlaces ya compartidos; lo
+   que se ve por pantalla sale de data/categorias.js.
+   Los campos están explicados en salud.js.
    ══════════════════════════════════════════════════════════════ */
 
 GUIA.registrarSitios("oviedo", [
@@ -68,9 +72,11 @@ GUIA.registrarSitios("oviedo", [
     nombre: "Emperatriz Sidrería",
     subtitulo: "Sidrería asturiana con cocina ecuatoriana",
     categoria: "sabor",
+    coords: [43.361633, -5.862952],
     direccion: "Calle Silla del Rey 19, bajo, 33013",
     telefono: "603 85 17 57",
-    nota: "El descubrimiento: por fuera es una sidrería de barrio y por dentro se come ecuatoriano. Las reseñas dicen que el encebollado es de lo mejor que se come por aquí. 4,7 en Google con 276 opiniones, y el negocio confirmó sus datos hace poco, así que está bien vivo. Ojo con el horario: Google dice que cierra a medianoche pero un directorio da de 11:00 a 16:00 y cierre los martes. Llama antes de ir.",
+    horario: "De miércoles a lunes de 11:00 a 16:00 y de 19:00 a 24:00, martes cerrado",
+    nota: "El descubrimiento: por fuera es una sidrería de barrio y por dentro se come ecuatoriano. Las reseñas dicen que el encebollado es de lo mejor que se come por aquí, y va por 4,7 en Google. Está en El Cristo, cerca del HUCA viejo. Cierra los martes y hace jornada partida, así que si vas a media tarde te lo encuentras cerrado.",
     maps: "https://www.google.com/maps/search/?api=1&query=Emperatriz+Sidreria+Calle+Silla+del+Rey+19+Oviedo",
     fotos: [],
     verificado: "2026-08"

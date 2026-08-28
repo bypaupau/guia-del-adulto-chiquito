@@ -27,6 +27,7 @@ GUIA.registrarSitios("oviedo", [
     nombre: "Consulado de Ecuador",
     subtitulo: "Está en Madrid, no en Asturias",
     categoria: "tramites",
+    coords: [40.442557, -3.700816],
     direccion: "Calle Alenza 1, planta baja, 28003 Madrid (metro Ríos Rosas)",
     telefono: "608 795 061",
     nota: "Ojo con esto, que no es obvio: Asturias depende del Consulado General en MADRID. Los de Bilbao y Santander están más cerca, pero son consulados honorarios y no son los que tramitan tu pasaporte. Ese teléfono es el de emergencias 24 horas. Desde Oviedo, Madrid está a unas 3 horas en tren o 5 en bus. Todo va con cita previa.",
