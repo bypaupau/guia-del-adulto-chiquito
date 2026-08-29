@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="assets/css/tokens.css">
 <link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/intro.css">
 <link rel="stylesheet" href="assets/css/mapa.css">
 <link rel="stylesheet" href="assets/css/panel.css">
 <link rel="stylesheet" href="assets/css/detalle.css">
@@ -21,56 +22,105 @@
 
 <body>
 
+<!-- ══════════ La bienvenida ══════════
+     Tres segundos y se va sola. No tapa el mapa: lleva
+     pointer-events:none, así que se puede arrastrar desde ya. -->
+<div class="intro" id="intro">
+  <div>
+    <h1>El mapa del adulto chiquito</h1>
+    <p>Todo lo del folleto, con dirección y con cómo llegar</p>
+  </div>
+</div>
+
 <!-- El mapa ocupa toda la pantalla; lo demás flota encima -->
 <div id="mapa"></div>
 
 <!-- ══════════ PANEL FLOTANTE ══════════ -->
-<aside class="panel vidrio" id="panel">
+<aside class="panel vidrio plegado" id="panel">
 
   <button class="tirador" id="tirador" aria-label="Desplegar la lista"><span class="barra"></span></button>
 
+  <!-- Cabecera y buscador COMPARTEN FILA. Antes el botón de
+       minimizar se llevaba una fila entera para él solo, que en la
+       vista de lista quedaba casi vacía. En la ficha el buscador se
+       esconde y esta misma fila pasa a ser [volver] … [fijar][—]. -->
   <header class="panel-top">
-    <button class="icono-btn" id="volver" hidden aria-label="Volver a la lista"></button>
-    <div class="titulo" id="titulo">
-      <h1>El mapa del adulto chiquito</h1>
-      <p class="lema">Todo lo del folleto, con dirección y con cómo llegar</p>
+    <button class="icono-btn chico" id="volver" hidden aria-label="Volver a la lista"></button>
+
+    <div class="buscador">
+      <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 105 14.3l5.3 5.4 1.4-1.4-5.3-5.4A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/></svg>
+      <input id="busqueda" type="search" placeholder="Buscar un sitio"
+             autocomplete="off" aria-label="Buscar un sitio">
+      <button id="limpiar-busqueda" type="button" hidden aria-label="Limpiar la búsqueda">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.7L12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7l1.4-1.4L10.6 10.6l6.3-6.3z"/></svg>
+      </button>
     </div>
+
+    <!-- Solo existe en la ficha, cuando el buscador se esconde: es lo
+         que empuja los botones al borde derecho. -->
+    <span class="hueco-top"></span>
     <div class="acciones-top">
-      <button class="icono-btn" id="fijar" hidden aria-pressed="false" aria-label="Fijar la ficha en una tarjeta"></button>
-      <button class="icono-btn" id="minimizar" aria-label="Minimizar el menú"></button>
+      <button class="icono-btn chico" id="fijar" hidden aria-pressed="false" aria-label="Fijar la ficha en una tarjeta"></button>
+      <button class="icono-btn chico" id="minimizar" aria-label="Minimizar el menú"></button>
     </div>
   </header>
 
-  <div class="buscador">
-    <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 105 14.3l5.3 5.4 1.4-1.4-5.3-5.4A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/></svg>
-    <input id="busqueda" type="search" placeholder="Buscar un sitio"
-           autocomplete="off" aria-label="Buscar un sitio">
-    <button id="limpiar-busqueda" type="button" hidden aria-label="Limpiar la búsqueda">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.7L12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7l1.4-1.4L10.6 10.6l6.3-6.3z"/></svg>
-    </button>
-  </div>
-
   <div class="controles" id="controles">
     <span id="selector-ciudad"></span>
-    <button class="pastilla" id="boton-categorias" aria-expanded="false" aria-controls="menu-categorias">
+    <button class="pastilla" id="boton-categorias" aria-expanded="false" aria-controls="cajon-categorias">
       <span id="etiqueta-categorias">Categorías</span>
     </button>
-    <span id="selector-origen"></span>
-
-    <!-- El desplegable cuelga de esta fila, por eso vive dentro -->
-    <div class="menu-cat vidrio" id="menu-categorias" hidden role="group" aria-label="Categorías"></div>
   </div>
 
-  <div class="panel-cuerpo">
-    <div class="vista vista-lista" id="vista-lista">
-      <p class="contador" id="contador"></p>
-      <div id="lista"></div>
-      <p class="pie">Y si algo no está aquí,<br>me escribes y lo agrego.</p>
+  <!-- ══════════ EL CAJÓN DE CATEGORÍAS ══════════
+       NO es una ventana encima de la lista: es una sección hundida
+       DENTRO del panel que empuja la lista hacia abajo en vez de
+       taparla. Por eso vive aquí fuera de .controles, sin
+       position:absolute, sin z-index y sin la clase .vidrio (que le
+       daba sombra propia y lo hacía parecer otro panel).
+       Lleva tope de altura y scroll propio para que abajo SIEMPRE
+       queden resultados a la vista mientras se filtra. -->
+  <div class="cajon-cat" id="cajon-categorias">
+    <div class="cajon-tapa">
+      <div class="cajon-caja">
+        <div class="cajon-top">
+          <span class="cajon-titulo">Filtrar por categoría</span>
+          <button class="listo" id="cerrar-categorias" type="button">Listo</button>
+        </div>
+        <div class="menu-cat" id="menu-categorias" role="group" aria-label="Categorías"></div>
+      </div>
     </div>
-    <div class="vista vista-detalle" id="vista-detalle" aria-live="polite">
-      <div class="ficha-cuerpo" id="ficha-cuerpo"></div>
+  </div>
+
+  <!-- El control que abre y cierra la lista. Los tres trozos van
+       juntos y en este orden a propósito: qué hace, cuántos hay y
+       hacia dónde abre. Si la cantidad se va al borde derecho, deja
+       de leerse como parte del mismo botón. -->
+  <button class="alternar-lista" id="alternar-lista" type="button"
+          aria-expanded="false" aria-controls="plegable">
+    <span class="etiqueta" id="etiqueta-lista">Ver la lista</span>
+    <span class="cuantos" id="contador"></span>
+    <span class="chevron" aria-hidden="true"></span>
+  </button>
+
+  <div class="plegable" id="plegable">
+    <div class="panel-cuerpo">
+      <div class="vista vista-lista" id="vista-lista">
+        <!-- De dónde salen los "≈ 36 min" de cada tarjeta. Vive aquí
+             y no entre los filtros porque es la leyenda de esa
+             columna: si no hay lista, no hay nada que explicar. -->
+        <div class="desde" id="pie-lista" hidden>
+          <span id="selector-origen"></span>
+          <span class="sin-pin" id="aviso-sin-pin"></span>
+        </div>
+        <div id="lista"></div>
+        <p class="pie">Y si algo no está aquí,<br>me escribes y lo agrego.</p>
+      </div>
+      <div class="vista vista-detalle" id="vista-detalle" aria-live="polite">
+        <div class="ficha-cuerpo" id="ficha-cuerpo"></div>
+      </div>
+      <span class="pista-scroll" id="pista-scroll" hidden aria-hidden="true"></span>
     </div>
-    <span class="pista-scroll" id="pista-scroll" hidden aria-hidden="true"></span>
   </div>
 
 </aside>
@@ -95,6 +145,7 @@
 <script src="data/ciudades.js"></script>
 
 <!-- ══════════ La aplicación ══════════ -->
+<script src="js/intro.js"></script>
 <script src="js/datos.js"></script>
 <script src="js/estado.js"></script>
 <script src="js/mapa.js"></script>

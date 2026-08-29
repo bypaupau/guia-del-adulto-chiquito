@@ -51,6 +51,10 @@
     if (!panel || !H.esMovil()) return;
     panel.classList.remove("media", "arriba");
     if (estado !== "asomada") panel.classList.add(estado);
+    /* La hoja asomada enseña buscador y filtros pero no la lista, o
+       sea que es el equivalente móvil de tener la lista recogida.
+       Se lo decimos al chevron para que no diga una cosa distinta. */
+    if (G.panel && G.panel.sincronizarLista) G.panel.sincronizarLista(estado !== "asomada");
     setTimeout(function () { G.mapa.ajustarTamano(); G.panel.revisarPista(); }, 360);
   };
 })(window.GUIA);

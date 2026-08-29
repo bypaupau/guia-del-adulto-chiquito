@@ -10,6 +10,10 @@ GUIA.iconosUI = {
   buscar:'<path d="M10 2a8 8 0 105 14.3l5.3 5.4 1.4-1.4-5.3-5.4A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>',
   cerrar:'<path d="M18.3 5.7L12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7l1.4-1.4L10.6 10.6l6.3-6.3z"/>',
   atras:'<path d="M15.4 4.6L14 3.2 5.2 12l8.8 8.8 1.4-1.4L8 12z"/>',
+  /* Guardar el panel. Es un guion y no una flecha a propósito: la
+     flecha hacia abajo ya la usa el chevron que abre la lista, y dos
+     flechas iguales en la misma caja no se distinguen. */
+  minimizar:'<path d="M5 11h14v2H5z"/>',
   abajo:'<path d="M12 15.4L3.2 6.6 4.6 5.2 12 12.6l7.4-7.4 1.4 1.4z"/>',
   reloj:'<path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 10.4V6h-2v7.4l5 3 1-1.7z"/>',
   web:'<path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.9 6h-2.5a15 15 0 00-1.6-3.7A8 8 0 0118.9 8zM12 4.1c.7 1 1.3 2.3 1.7 3.9h-3.4c.4-1.6 1-2.9 1.7-3.9zM4.3 14a8 8 0 010-4h2.9a17 17 0 000 4zm.8 2h2.5a15 15 0 001.6 3.7A8 8 0 015.1 16zm2.5-8H5.1a8 8 0 014.1-3.7A15 15 0 007.6 8zM12 19.9c-.7-1-1.3-2.3-1.7-3.9h3.4c-.4 1.6-1 2.9-1.7 3.9zM14.1 14H9.9a15 15 0 010-4h4.2a15 15 0 010 4zm.7 5.7a15 15 0 001.6-3.7h2.5a8 8 0 01-4.1 3.7zm2-5.7a17 17 0 000-4h2.9a8 8 0 010 4z"/>',

@@ -13,6 +13,7 @@
   var E = G.estado, D = G.datos;
   var $ = function (id) { return document.getElementById(id); };
   var visibles = [];
+  var filtrosListos = false;   // los oyentes globales se ponen una sola vez
 
   /* Los rellena app.js */
   P.alElegir = function () {};
@@ -23,7 +24,7 @@
   P.prepararCabecera = function () {
     icono($("volver"), G.iconosUI.atras);
     icono($("fijar"), G.iconosUI.chincheta);
-    icono($("minimizar"), G.iconosUI.abajo);
+    icono($("minimizar"), G.iconosUI.minimizar);
     $("burbuja").innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + G.iconosUI.lista + "</svg>" +
                              '<span class="cuenta" id="burbuja-cuenta"></span>';
 
@@ -31,10 +32,13 @@
     $("fijar").addEventListener("click", function () { P.alFijar(); });
     $("minimizar").addEventListener("click", function () { P.minimizar(true); });
     $("burbuja").addEventListener("click", function () { P.minimizar(false); });
+    $("alternar-lista").addEventListener("click", function () {
+      P.alternarLista(!P.listaAbierta());
+    });
 
     document.addEventListener("keydown", function (e) {
       if (e.key !== "Escape") return;
-      if (!$("menu-categorias").hidden) return abrirMenu(false);
+      if (menuAbierto()) return abrirMenu(false);
       if ($("panel").classList.contains("con-detalle")) P.alVolver();
     });
 
@@ -46,6 +50,28 @@
     $("burbuja").hidden = !si;
     if (si) abrirMenu(false);
     setTimeout(function () { G.mapa.ajustarTamano(); }, 320);
+  };
+
+  /* ---------- Abrir y cerrar la lista ----------
+     La lista arranca cerrada para que al abrir la página se vea el
+     mapa. En escritorio se recoge el bloque entero (CSS: .plegado);
+     en el móvil la hoja ya sube y baja sola, así que allí el chevron
+     mueve la hoja, que es la misma acción con otro gesto. */
+  P.listaAbierta = function () { return !$("panel").classList.contains("plegado"); };
+
+  P.alternarLista = function (abrir) {
+    P.sincronizarLista(abrir);
+    if (abrir) P.minimizar(false);
+    if (G.hoja.esMovil()) G.hoja.poner(abrir ? "media" : "asomada");
+    else setTimeout(function () { G.mapa.ajustarTamano(); revisarPista(); }, 380);
+  };
+
+  /* Deja el chevron diciendo la verdad. La llama también la hoja del
+     móvil cuando la arrastran a mano. */
+  P.sincronizarLista = function (abierta) {
+    $("panel").classList.toggle("plegado", !abierta);
+    $("alternar-lista").setAttribute("aria-expanded", abierta ? "true" : "false");
+    $("etiqueta-lista").textContent = abierta ? "Esconder la lista" : "Ver la lista";
   };
 
   P.mostrarDetalle = function (si) {
@@ -62,43 +88,68 @@
   };
 
   /* ---------- Ciudad ----------
-     Siempre desplegable, aunque de momento solo haya Oviedo: es la
-     puerta por la que entrarán Madrid, Barcelona y las demás. */
+     Es un selector de LOCALIZACIÓN, no un filtro más: por eso lleva
+     su rótulo delante ("Ciudad: Oviedo") y va separado de las
+     categorías. Sale solo de data/ciudades.js, así que añadir una
+     ciudad nueva no obliga a tocar esto.
+
+     Ojo: aquí NO se comprueba D.ciudad(id), porque la configuración
+     de una ciudad no existe hasta que se cargan sus datos. De eso se
+     encarga app.js al recibir el motivo "ciudad". */
   P.pintarCiudades = function () {
     var caja = $("selector-ciudad"), ciudades = D.ciudades();
-    caja.innerHTML = '<select id="ciudad" aria-label="Ciudad">' +
-      ciudades.map(function (c) {
-        return '<option value="' + G.esc(c.id) + '"' + (c.id === E.ciudad ? " selected" : "") +
-               ">" + G.esc(c.nombre) + "</option>";
-      }).join("") +
-      (ciudades.length < 2 ? '<option disabled>Más ciudades, pronto</option>' : "") +
-      "</select>";
+    caja.innerHTML =
+      '<span class="grupo-ciudad">' +
+        '<span class="rotulo-ciudad">Ciudad:</span>' +
+        '<select id="ciudad" aria-label="Ciudad">' +
+          ciudades.map(function (c) {
+            return '<option value="' + G.esc(c.id) + '"' +
+                   (c.id === E.ciudad ? " selected" : "") + ">" +
+                   G.esc(c.nombre) + "</option>";
+          }).join("") +
+        "</select>" +
+      "</span>";
     $("ciudad").addEventListener("change", function () {
-      if (!D.ciudad(this.value)) return;
+      if (this.value === E.ciudad) return;
       E.cambiar({ ciudad: this.value, sitio: null, categorias: [], busqueda: "" }, "ciudad");
     });
   };
 
-  /* ---------- Origen de las rutas ---------- */
+  /* ---------- Origen de las rutas ----------
+     Vive en el pie de la lista, no entre los filtros: es la leyenda
+     de la columna de "≈ 36 min", así que se lee justo encima de esa
+     columna y desaparece cuando la lista está recogida. Las ciudades
+     sin punto de partida (Madrid, Barcelona) lo dejan vacío. */
   P.pintarOrigenes = function () {
     var caja = $("selector-origen"), origenes = D.origenes(E.ciudad);
-    if (!origenes.length) { caja.innerHTML = ""; return; }
-    if (origenes.length === 1) {
-      caja.innerHTML = '<span class="origen-fijo">' + svg(G.iconosUI.andando) +
-        "desde " + G.esc(origenes[0].corto || origenes[0].nombre) + "</span>";
-      return;
+
+    if (!origenes.length) caja.innerHTML = "";
+    else if (origenes.length === 1) {
+      caja.innerHTML = svg(G.iconosUI.andando) +
+        "<span>Tiempos a pie desde <b>" +
+        G.esc(origenes[0].corto || origenes[0].nombre) + "</b></span>";
+    } else {
+      caja.innerHTML = svg(G.iconosUI.andando) + "<span>Tiempos a pie desde</span>" +
+        '<select id="origen" aria-label="Punto de partida">' +
+        origenes.map(function (o) {
+          return '<option value="' + G.esc(o.id) + '"' +
+                 (E.origen && o.id === E.origen.id ? " selected" : "") + ">" +
+                 G.esc(o.corto || o.nombre) + "</option>";
+        }).join("") + "</select>";
+      $("origen").addEventListener("change", function () {
+        var v = this.value;
+        E.cambiar({ origen: D.origenes(E.ciudad).filter(function (o) { return o.id === v; })[0] }, "origen");
+      });
     }
-    caja.innerHTML = '<select id="origen" aria-label="Punto de partida">' +
-      origenes.map(function (o) {
-        return '<option value="' + G.esc(o.id) + '"' +
-               (E.origen && o.id === E.origen.id ? " selected" : "") + ">desde " +
-               G.esc(o.corto || o.nombre) + "</option>";
-      }).join("") + "</select>";
-    $("origen").addEventListener("change", function () {
-      var v = this.value;
-      E.cambiar({ origen: D.origenes(E.ciudad).filter(function (o) { return o.id === v; })[0] }, "origen");
-    });
+    revisarPie();
   };
+
+  /* El pie solo existe si tiene algo que contar. */
+  function revisarPie() {
+    var pie = $("pie-lista");
+    if (!pie) return;
+    pie.hidden = !$("selector-origen").innerHTML && !$("aviso-sin-pin").textContent;
+  }
 
   /* ---------- Categorías ----------
      Un desplegable con casillas en vez de diez chips sueltos: la
@@ -124,25 +175,44 @@
       b.addEventListener("click", function () {
         if (!b.dataset.cat) E.todasLasCategorias();
         else E.alternarCategoria(b.dataset.cat);
+        /* Si la lista estaba recogida, se abre: filtrar y no ver el
+           resultado es lo mismo que no filtrar. */
+        if (!P.listaAbierta()) P.alternarLista(true);
       });
     });
 
-    boton.addEventListener("click", function () {
-      abrirMenu($("menu-categorias").hidden);
-    });
-
-    document.addEventListener("click", function (e) {
-      if ($("menu-categorias").hidden) return;
-      if (!$("menu-categorias").contains(e.target) && e.target !== boton && !boton.contains(e.target))
+    /* Estos van una sola vez: pintarFiltros se vuelve a llamar al
+       cambiar de ciudad, y si no, se apilarían los oyentes. */
+    if (!filtrosListos) {
+      filtrosListos = true;
+      boton.addEventListener("click", function () { abrirMenu(!menuAbierto()); });
+      $("cerrar-categorias").addEventListener("click", function () {
         abrirMenu(false);
-    });
+        boton.focus();   /* el foco vuelve a la pastilla, no se pierde */
+      });
+    }
+    /* Ojo: NO se cierra al pulsar fuera. Eso era propio de la ventana
+       flotante de antes; ahora es una sección del panel y cerrarse
+       sola al tocar el mapa o la lista despistaría. Se cierra por la
+       pastilla, por "Listo" o con Escape. */
 
     P.marcarFiltros();
   };
 
+  function menuAbierto() { return $("panel").classList.contains("con-categorias"); }
+
   function abrirMenu(si) {
-    $("menu-categorias").hidden = !si;
+    $("panel").classList.toggle("con-categorias", si);
     $("boton-categorias").setAttribute("aria-expanded", si ? "true" : "false");
+
+    /* Filtrar sin ver el resultado es lo mismo que no filtrar: al
+       abrir el cajón nos aseguramos de que la lista queda debajo, a
+       la vista. En el móvil eso significa subir la hoja del todo. */
+    if (si) {
+      if (G.hoja.esMovil()) { P.sincronizarLista(true); G.hoja.poner("arriba"); }
+      else if (!P.listaAbierta()) P.alternarLista(true);
+    }
+    setTimeout(function () { G.mapa.ajustarTamano(); revisarPista(); }, 340);
   }
 
   P.marcarFiltros = function () {
@@ -170,6 +240,7 @@
       t = setTimeout(function () {
         E.cambiar({ busqueda: campo.value }, "busqueda");
         limpiar.hidden = !campo.value;
+        if (campo.value && !P.listaAbierta()) P.alternarLista(true);
       }, 160);
     });
     limpiar.addEventListener("click", function () {
@@ -185,12 +256,19 @@
     var lista = $("lista"), total = D.sitios(E.ciudad).length;
 
     var sinPin = visibles.filter(function (s) { return !s.coords; }).length;
-    $("contador").textContent = !visibles.length ? "" :
-      (E.categorias.length || E.busqueda
-        ? visibles.length + " de " + total + " sitios"
-        : total + " sitios") +
-      (sinPin === visibles.length ? ", ninguno con chincheta en el mapa"
-       : sinPin ? ", " + sinPin + " sin chincheta" : "");
+
+    /* La lista se filtra en vivo, pero el cambio puede pasar
+       desapercibido. Un pulso corto en la pastilla de la cuenta hace
+       que el ojo se entere de que hay resultados nuevos ahí abajo. */
+    var cuantos = $("contador"), texto = textoContador(visibles.length, total);
+    if (cuantos.textContent && cuantos.textContent !== texto) {
+      cuantos.classList.remove("cambia");
+      void cuantos.offsetWidth;          /* reinicia la animación */
+      cuantos.classList.add("cambia");
+    }
+    cuantos.textContent = texto;
+    $("aviso-sin-pin").textContent = avisoSinPin(visibles.length, sinPin);
+    revisarPie();
     var cuenta = $("burbuja-cuenta");
     if (cuenta) cuenta.textContent = visibles.length;
 
@@ -219,6 +297,23 @@
     });
     setTimeout(revisarPista, 60);
   };
+
+  /* La pastilla del control: corta, porque va pegada a la etiqueta y
+     tiene que caber a su lado sin empujar el chevron. */
+  function textoContador(cuantos, total) {
+    if (!cuantos) return "ninguno";
+    return (E.categorias.length || E.busqueda)
+      ? cuantos + " de " + total
+      : total + " sitios";
+  }
+
+  /* El matiz de las chinchetas que faltan se cuenta abajo, en el pie
+     de la lista, que es donde se nota: son las tarjetas que ponen
+     "sin chincheta" en vez de los minutos. */
+  function avisoSinPin(cuantos, sinPin) {
+    if (!cuantos || !sinPin) return "";
+    return sinPin === cuantos ? "ninguno en el mapa" : sinPin + " sin chincheta";
+  }
 
   /* Estimación en línea recta, marcada con ≈ para no prometer lo
      que no es. La ruta de verdad se calcula al abrir la ficha. */

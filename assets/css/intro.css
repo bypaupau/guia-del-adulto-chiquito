@@ -1,0 +1,63 @@
+/* ══════════════════════════════════════════════════════════════
+   INTRO · la bienvenida de tres segundos
+   ──────────────────────────────────────────────────────────────
+   El título ya no vive dentro del panel: sale aquí, una vez, al
+   abrir la página, y se va solo.
+
+   Dos animaciones a la vez:
+     · el texto entra de opacity 0 a 1 mientras baja unos píxeles
+     · el velo aguanta y se desvanece al final
+
+   Regla importante: pointer-events:none. El velo se ve, pero no
+   se toca, así que se puede mover el mapa desde el primer
+   instante sin esperar a que termine.
+   ══════════════════════════════════════════════════════════════ */
+
+.intro{
+  position:fixed;inset:0;z-index:1000;
+  display:grid;place-items:center;
+  padding:24px;text-align:center;
+  background:rgba(247,244,238,.86);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  pointer-events:none;
+  animation:intro-velo 3s ease forwards;
+}
+.intro[hidden]{display:none}
+
+.intro h1{
+  font-family:var(--letra-titulo);
+  font-size:clamp(1.75rem,6.2vw,3.1rem);
+  font-weight:900;line-height:1.08;letter-spacing:-.032em;
+  color:var(--tinta);
+  max-width:13ch;
+  text-wrap:balance;
+  opacity:0;
+  animation:intro-texto 1.7s cubic-bezier(.22,.68,.16,1) forwards;
+}
+
+/* El lema entra un poco después, para que el ojo lea primero el título. */
+.intro p{
+  margin-top:10px;font-size:.9rem;color:var(--tinta-media);
+  opacity:0;
+  animation:intro-texto 1.4s .55s cubic-bezier(.22,.68,.16,1) forwards;
+}
+
+/* Fade + desplazamiento hacia abajo, los dos a la vez. */
+@keyframes intro-texto{
+  from{opacity:0;transform:translateY(-24px)}
+  to  {opacity:1;transform:translateY(0)}
+}
+
+/* El velo aguanta entero casi todo el rato y se va al final. */
+@keyframes intro-velo{
+  0%,70%{opacity:1;visibility:visible}
+  100%  {opacity:0;visibility:hidden}
+}
+
+/* Si el sistema pide menos movimiento, no hay intro: el mapa,
+   directo. (js/intro.js también la retira al instante.) */
+@media (prefers-reduced-motion:reduce){
+  .intro{animation:none;opacity:0;visibility:hidden}
+  .intro h1,.intro p{animation:none}
+}
