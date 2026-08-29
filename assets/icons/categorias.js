@@ -21,5 +21,7 @@ GUIA.iconosCategoria = {
   escapada:'<path d="M2 20L9 6l4.5 8L16 10l6 10z"/>',
   cultura:'<path d="M12 2L2 7.2V9h20V7.2zM4.5 11h2.8v7H4.5zm6.1 0h2.8v7h-2.8zm6.1 0h2.8v7h-2.8zM2 20h20v2H2z"/>',
   ocio:'<path fill-rule="evenodd" d="M3 4.5h18a1 1 0 011 1v13a1 1 0 01-1 1H3a1 1 0 01-1-1v-13a1 1 0 011-1zm6.6 3.4v8.2l7-4.1z"/>',
-  aire:'<path d="M12 2l4.6 6.6h-2.9L18 14.2h-2.7l3.2 4.6h-5.4V22h-2.2v-3.2H5.5l3.2-4.6H6l4.3-5.6H7.4z"/>'
+  aire:'<path d="M12 2l4.6 6.6h-2.9L18 14.2h-2.7l3.2 4.6h-5.4V22h-2.2v-3.2H5.5l3.2-4.6H6l4.3-5.6H7.4z"/>',
+  /* Casa y bazar: una casita con la puerta abierta. */
+  hogar:'<path d="M12 2.4L1.6 11h2.9v10.6h5.1V15h4.8v6.6h5.1V11h2.9zM12 5.2l5.6 4.6v9.4h-1.1V12.8H7.5v6.4H6.4V9.8z"/>'
 };

@@ -27,9 +27,10 @@ GUIA.registrarCategorias([
   { id: "tramites",   nombre: "Trámites",         color: "#6A5B8C", orden: 8 },
   { id: "papeleria",  nombre: "Papelería",        color: "#3F8079", orden: 9 },
   { id: "arreglos",   nombre: "Reparaciones",     color: "#5F6B72", orden: 10 },
-  { id: "ropa",       nombre: "Ropa",             color: "#A8446F", orden: 11 },
+  { id: "ropa",       nombre: "Ropa y tiendas",   color: "#A8446F", orden: 11 },
   { id: "escapada",   nombre: "Escapadas",        color: "#2E6B4F", orden: 12 },
   { id: "cultura",    nombre: "Cultura",          color: "#6B3FA0", orden: 13 },
   { id: "ocio",       nombre: "Cine y ocio",      color: "#8A6D1F", orden: 14 },
-  { id: "aire",       nombre: "Aire libre",       color: "#3E7B3E", orden: 15 }
+  { id: "aire",       nombre: "Aire libre",       color: "#3E7B3E", orden: 15 },
+  { id: "hogar",      nombre: "Casa y bazar",     color: "#A85A2E", orden: 16 }
 ]);

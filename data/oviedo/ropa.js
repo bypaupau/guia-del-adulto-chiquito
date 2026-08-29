@@ -155,5 +155,53 @@ GUIA.registrarSitios("oviedo", [
     fotos: [],
     verificado: "2026-08"
   }
+,
 
+  {
+    id: "cc-modoo",
+    nombre: "C.C. Modoo",
+    subtitulo: "El centro comercial que te pilla al lado del campus",
+    categoria: "ropa",
+    coords: [43.35834, -5.86093],
+    direccion: "Calle Arturo Álvarez Buylla, 33005 (Buenavista)",
+    nota: "Este es EL que te interesa de diario: está a un paseo corto desde Informática, junto a la estación de Oviedo-Llamaquique. Tiene tiendas, cafeterías y sitio para resolver un recado rápido sin cruzar la ciudad. Al lado está Espacio Buenavista, con El Corte Inglés y el Primark de la ciudad. Antes de plantarte, mira la tienda concreta que buscas: los locales de los centros comerciales cambian bastante.",
+    fotos: [],
+    verificado: "2026-08"
+  },
+
+  {
+    id: "cc-salesas",
+    nombre: "C.C. Salesas",
+    subtitulo: "Pequeño y céntrico, con horario largo",
+    categoria: "ropa",
+    coords: [43.3661, -5.8495],
+    direccion: "Calle Nueve de Mayo 2, 33002",
+    nota: "Tres plantas en pleno centro. No es enorme, pero abre de 10:00 a 21:00 sin cerrar a mediodía y ahí dentro están Arreglos & Co (los bajos de pantalón) y Pressto (la tintorería), que ya tienes fichados en esta misma guía. Es el sitio al que ir cuando el resto del comercio del centro ya cerró para comer.",
+    fotos: [],
+    verificado: "2026-08"
+  },
+
+  {
+    id: "cc-los-prados",
+    nombre: "C.C. Los Prados",
+    subtitulo: "Hipermercado, tiendas y cines bajo el mismo techo",
+    categoria: "ropa",
+    coords: [43.37096, -5.83108],
+    direccion: "Avenida Fernández Ladreda s/n, 33011",
+    nota: "El de 'ir a hacer la compra grande y de paso todo lo demás': hipermercado Carrefour dentro, tiendas de ropa, cines Yelmo y gimnasio. Si un mes te toca reponer de todo (despensa, un par de camisetas, una película), aquí lo haces en un solo viaje sin salir de Oviedo. Está al noreste, más lejos que el centro pero mucho más cerca que el Parque Principado.",
+    fotos: [],
+    verificado: "2026-08"
+  },
+
+  {
+    id: "el-corte-ingles",
+    nombre: "El Corte Inglés",
+    subtitulo: "Grandes almacenes: de todo, pero caro",
+    categoria: "ropa",
+    coords: [43.36439, -5.85215],
+    direccion: "Calle Uría 15, 33003",
+    nota: "Aquí encuentras lo que no encuentras en ningún otro sitio, y lo pagas. Úsalo para lo urgente y lo raro: un adaptador de enchufe, una maleta, un regalo decente, ropa formal si te hace falta. Tienen supermercado dentro, que abre cuando el resto ya cerró. Hay un segundo El Corte Inglés en el centro comercial Espacio Buenavista (Calle Arturo Álvarez Buylla 5), que es el que te pilla cerca del campus y el que está pegado al Primark.",
+    fotos: [],
+    verificado: "2026-08"
+  }
 ]);

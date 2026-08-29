@@ -137,5 +137,19 @@ GUIA.registrarSitios("oviedo", [
     fotos: [],
     verificado: "2026-08"
   }
+,
 
+  {
+    id: "masymas-el-cristo",
+    nombre: "masymas El Cristo",
+    subtitulo: "El asturiano que te pilla de camino al campus",
+    categoria: "super",
+    coords: [43.355740, -5.860658],
+    direccion: "Avenida Cristo de las Cadenas 24, 33006",
+    telefono: "985 96 37 24",
+    nota: "masymas es la otra cadena asturiana, junto con Alimerka, y esta tienda está en El Cristo, o sea entre tu facultad y el centro de salud: te queda de paso. Buena para la compra del día a día y para producto de aquí. Si un día no te cuadra el horario de esta, tienes el Mercadona de Monte Cerrao a un paseo parecido.",
+    maps: "https://www.google.com/maps/search/?api=1&query=masymas+Avenida+Cristo+de+las+Cadenas+24+Oviedo",
+    fotos: [],
+    verificado: "2026-08"
+  }
 ]);
