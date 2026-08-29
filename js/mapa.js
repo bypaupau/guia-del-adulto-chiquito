@@ -18,8 +18,20 @@
   var marcadores = {};   // id de sitio → marcador
   var fallos = 0, yaCambie = false;
 
-  /* ---------- Arranque ---------- */
+  /* ---------- Arranque ----------
+     Se puede llamar más de una vez: al cambiar de ciudad se tira el
+     mapa anterior y se levanta otro sobre el mismo div, que es más
+     limpio que ir moviendo capas, centro y estilo a mano. */
+  M.destruir = function () {
+    if (mapa) mapa.remove();
+    mapa = capaBase = capaEtiquetas = capaRuta = null;
+    marcadorOrigen = marcadorPaso = null;
+    marcadores = {};
+    fallos = 0; yaCambie = false;
+  };
+
   M.crear = function (config, estiloConfig) {
+    M.destruir();
     centroCiudad = config.centro;
     mapa = L.map("mapa", { zoomControl: false, attributionControl: true })
             .setView(config.centro, config.zoom);

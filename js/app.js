@@ -9,6 +9,7 @@
 
   var E = G.estado, D = G.datos, M = G.mapa, P = G.panel, F = G.detalle, H = G.hoja;
   var peticionRuta = 0, fijada = false;
+  var ciudadMontada = null;   // la que está pintada AHORA MISMO en el mapa
 
   G.iniciar = function () {
     var url = E.leerURL();
@@ -20,17 +21,10 @@
     E.origen = D.origenPorDefecto(ciudad);
     E.sitio = url.sitio && D.sitio(ciudad, url.sitio) ? url.sitio : null;
 
-    D.revisar(ciudad);
-
-    M.crear(D.ciudad(ciudad), D.estiloMapa(ciudad));
-    M.ponerOrigen(E.origen);
-
     P.prepararCabecera();
-    P.pintarCiudades();
-    P.pintarOrigenes();
-    P.pintarFiltros();
     P.prepararBuscador();
     H.preparar();
+    montarCiudad(ciudad);
 
     P.alElegir = elegir;
     P.alVolver = volver;
@@ -38,13 +32,12 @@
     F.alPulsarFijada = function () { if (E.sitio) elegir(E.sitio); };
     F.alCerrarFijada = function () { fijada = false; F.quitarFijada(); P.marcarFijada(false); };
 
-    M.pintarSitios(D.sitios(ciudad), elegir);
-    refrescar();
-
+    /* La lista arranca recogida: lo primero que se ve es el mapa. */
+    P.sincronizarLista(false);
     if (E.sitio) elegir(E.sitio);
 
     E.alCambiar(function (estado, motivo) {
-      if (motivo === "ciudad") return location.reload();
+      if (motivo === "ciudad") return cambiarCiudad(estado.ciudad);
       if (motivo === "origen") {
         M.ponerOrigen(estado.origen);
         M.borrarRuta();
@@ -60,9 +53,70 @@
     });
 
     window.addEventListener("resize", function () { M.ajustarTamano(); });
+  };
+
+  /* ---------- Montar una ciudad ----------
+     Todo lo que depende de QUÉ ciudad estamos viendo vive aquí, y
+     nada más. Por eso cambiar de ciudad ya no recarga la página:
+     se vuelve a llamar a esto con la nueva y listo. */
+  function montarCiudad(id) {
+    ciudadMontada = id;
+    D.revisar(id);
+    M.crear(D.ciudad(id), D.estiloMapa(id));
+    M.ponerOrigen(E.origen);
+    P.pintarCiudades();
+    P.pintarOrigenes();
+    P.pintarFiltros();
+    M.pintarSitios(D.sitios(id), elegir);
+    refrescar();
     ubicarme();
     if (location.search.indexOf("editar") !== -1) M.modoEdicion();
-  };
+  }
+
+  /* ---------- Cambiar de ciudad ----------
+     Los datos de una ciudad no existen hasta que se cargan sus
+     archivos, así que primero se piden y solo después se monta. Si
+     algo falla, se avisa y se deja donde estaba en vez de dejar la
+     pantalla a medias. */
+  function cambiarCiudad(id) {
+    var indice = D.ciudades().filter(function (c) { return c.id === id; })[0];
+    if (!indice) return G.avisar("Esa ciudad no está en data/ciudades.js.");
+
+    /* OJO: E.ciudad ya vale la nueva cuando llegamos aquí (lo cambia
+       E.cambiar antes de avisar), así que la de verdad "anterior" es
+       la que está montada en el mapa, no la del estado. */
+    var anterior = ciudadMontada;
+    if (id === anterior) return;
+    if (!G.ciudadCargada(id)) G.avisar("Cargando " + indice.nombre + "…", 2500);
+
+    G.cargarCiudad(indice, function (bien) {
+      if (!bien) {
+        E.ciudad = anterior;
+        E.escribirURL();
+        P.pintarCiudades();
+        return G.avisar("No pude cargar los datos de " + indice.nombre + ".");
+      }
+      E.ciudad = id;
+      E.origen = D.origenPorDefecto(id);
+      E.sitio = null;
+      E.categorias = [];
+      E.busqueda = "";
+
+      var campo = document.getElementById("busqueda");
+      if (campo) { campo.value = ""; document.getElementById("limpiar-busqueda").hidden = true; }
+
+      if (fijada) { fijada = false; F.quitarFijada(); P.marcarFijada(false); }
+      P.mostrarDetalle(false);
+      P.sincronizarLista(false);
+      montarCiudad(id);
+
+      /* Si veníamos de un enlace a un sitio de esa ciudad (o del
+         botón "atrás"), lo abrimos en cuanto está montada. */
+      var u = E.leerURL();
+      if (u.ciudad === id && u.sitio && D.sitio(id, u.sitio)) elegir(u.sitio, true);
+      else E.escribirURL();
+    });
+  }
 
   /* ---------- Pintar lo que depende de los filtros ---------- */
   function refrescar(motivo) {
@@ -90,7 +144,7 @@
     if (!sinTocarURL) E.escribirURL();
 
     F.abrir(s);
-    P.mostrarDetalle(true);
+    P.mostrarDetalle(true);   /* la ficha manda aunque la lista esté recogida */
     P.marcarElegido();
     P.irA(id);
     M.marcarElegido(D.sitios(E.ciudad), id);
