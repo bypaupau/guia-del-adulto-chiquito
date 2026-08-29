@@ -55,6 +55,7 @@
        sea que es el equivalente móvil de tener la lista recogida.
        Se lo decimos al chevron para que no diga una cosa distinta. */
     if (G.panel && G.panel.sincronizarLista) G.panel.sincronizarLista(estado !== "asomada");
-    setTimeout(function () { G.mapa.ajustarTamano(); G.panel.revisarPista(); }, 360);
+    setTimeout(function () { G.mapa.ajustarTamano(); G.panel.revisarPista(); },
+               G.panel.msTransicion);
   };
 })(window.GUIA);

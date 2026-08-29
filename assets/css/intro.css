@@ -28,17 +28,26 @@
 .intro h1{
   font-family:var(--letra-titulo);
   font-size:clamp(1.75rem,6.2vw,3.1rem);
-  font-weight:900;line-height:1.08;letter-spacing:-.032em;
+  font-weight:900;line-height:1.16;letter-spacing:-.032em;
   color:var(--tinta);
+  /* OJO: place-items:center centra la CAJA, no lo que hay dentro. La
+     caja mide lo que el subtítulo (el elemento más ancho) y este h1 es
+     más estrecho por el max-width, así que sin margin-inline:auto se
+     queda pegado a su izquierda. En el móvil eso eran 44 px de
+     desvío: el título salía descentrado. */
   max-width:13ch;
+  margin-inline:auto;
   text-wrap:balance;
   opacity:0;
   animation:intro-texto 1.7s cubic-bezier(.22,.68,.16,1) forwards;
 }
 
-/* El lema entra un poco después, para que el ojo lea primero el título. */
+/* El lema entra un poco después, para que el ojo lea primero el título.
+   El margen es de 14 px y no de 10: con el título a dos líneas, el rabo
+   de la "q" de "chiquito" se comía el hueco y las dos líneas se
+   tocaban en pantallas estrechas. */
 .intro p{
-  margin-top:10px;font-size:.9rem;color:var(--tinta-media);
+  margin-top:14px;font-size:.9rem;color:var(--tinta-media);
   opacity:0;
   animation:intro-texto 1.4s .55s cubic-bezier(.22,.68,.16,1) forwards;
 }

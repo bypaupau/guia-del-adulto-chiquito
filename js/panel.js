@@ -15,6 +15,13 @@
   var visibles = [];
   var filtrosListos = false;   // los oyentes globales se ponen una sola vez
 
+  /* Cuánto se espera antes de recolocar el mapa y revisar la pista de
+     scroll: un pelín más que la transición más larga del panel (la del
+     bloque plegable y la hoja del móvil, .26s en assets/css/panel.css).
+     ÚNICO SITIO donde vive este número; hoja.js lo lee de aquí. Si
+     tocas las duraciones del CSS, toca también esto. */
+  P.msTransicion = 290;
+
   /* Los rellena app.js */
   P.alElegir = function () {};
   P.alVolver = function () {};
@@ -49,7 +56,7 @@
     $("panel").classList.toggle("guardado", si);
     $("burbuja").hidden = !si;
     if (si) abrirMenu(false);
-    setTimeout(function () { G.mapa.ajustarTamano(); }, 320);
+    setTimeout(function () { G.mapa.ajustarTamano(); }, P.msTransicion);
   };
 
   /* ---------- Abrir y cerrar la lista ----------
@@ -63,7 +70,7 @@
     P.sincronizarLista(abrir);
     if (abrir) P.minimizar(false);
     if (G.hoja.esMovil()) G.hoja.poner(abrir ? "media" : "asomada");
-    else setTimeout(function () { G.mapa.ajustarTamano(); revisarPista(); }, 380);
+    else setTimeout(function () { G.mapa.ajustarTamano(); revisarPista(); }, P.msTransicion);
   };
 
   /* Deja el chevron diciendo la verdad. La llama también la hoja del
@@ -212,7 +219,7 @@
       if (G.hoja.esMovil()) { P.sincronizarLista(true); G.hoja.poner("arriba"); }
       else if (!P.listaAbierta()) P.alternarLista(true);
     }
-    setTimeout(function () { G.mapa.ajustarTamano(); revisarPista(); }, 340);
+    setTimeout(function () { G.mapa.ajustarTamano(); revisarPista(); }, P.msTransicion);
   }
 
   P.marcarFiltros = function () {

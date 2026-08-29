@@ -17,7 +17,11 @@
   z-index:500;
   transform:translateY(-50%);
   transform-origin:left center;
-  transition:opacity .26s ease,transform .3s cubic-bezier(.32,.72,0,1);
+  /* CURVA: la de antes acababa en un punto de control en (0,1), o sea
+     que el último tramo se arrastraba y todo se sentía más lento de lo
+     que duraba. Esta llega al final de verdad. Si cambias estas
+     duraciones, cambia también P.msTransicion en js/panel.js. */
+  transition:opacity .2s ease,transform .24s cubic-bezier(.22,.9,.28,1);
 }
 .panel.guardado{opacity:0;transform:translateY(-50%) scale(.9);pointer-events:none}
 
@@ -138,7 +142,7 @@
 .cajon-cat{
   flex:0 0 auto;
   display:grid;grid-template-rows:0fr;
-  transition:grid-template-rows .3s cubic-bezier(.32,.72,0,1);
+  transition:grid-template-rows .22s cubic-bezier(.22,.9,.28,1);
 }
 .panel.con-categorias .cajon-cat{grid-template-rows:1fr}
 .panel.con-categorias .cajon-caja{visibility:visible;transition:visibility 0s 0s}
@@ -149,7 +153,7 @@
   /* Recogido no se tabula. Sin esto, el teclado y el lector de
      pantalla siguen entrando en 16 casillas invisibles. El retardo
      del transition espera a que termine de plegarse. */
-  visibility:hidden;transition:visibility 0s .3s;
+  visibility:hidden;transition:visibility 0s .22s;
   background:rgba(255,255,255,.3);
   border-top:1px solid var(--vidrio-linea);
   border-bottom:1px solid var(--vidrio-linea);
@@ -244,7 +248,7 @@
   width:8px;height:8px;flex:0 0 auto;
   border-right:2px solid currentColor;border-bottom:2px solid currentColor;
   transform:translateY(-2px) rotate(45deg);
-  transition:transform .3s cubic-bezier(.32,.72,0,1);
+  transition:transform .22s cubic-bezier(.22,.9,.28,1);
 }
 .alternar-lista[aria-expanded="true"]{color:var(--tinta)}
 .alternar-lista[aria-expanded="true"] .chevron{transform:translateY(1px) rotate(-135deg)}
@@ -260,12 +264,12 @@
 .plegable{
   flex:1 1 auto;min-height:0;
   display:grid;grid-template-rows:1fr;
-  transition:grid-template-rows .34s cubic-bezier(.32,.72,0,1);
+  transition:grid-template-rows .26s cubic-bezier(.22,.9,.28,1);
 }
 .plegable>*{min-height:0;overflow:hidden}
 /* Misma razón que en el cajón: con la lista recogida, sus 104
    tarjetas no deben seguir en el orden de tabulación. */
-.panel.plegado:not(.con-detalle) .plegable>*{visibility:hidden;transition:visibility 0s .34s}
+.panel.plegado:not(.con-detalle) .plegable>*{visibility:hidden;transition:visibility 0s .26s}
 /* Con la ficha abierta manda la ficha, esté la lista como esté. */
 .panel.plegado:not(.con-detalle) .plegable{grid-template-rows:0fr}
 
@@ -318,7 +322,7 @@
 .vista::-webkit-scrollbar-thumb{background:rgba(47,43,38,.18);border-radius:9px}
 .vista-detalle{display:none}
 .panel.con-detalle .vista-lista{display:none}
-.panel.con-detalle .vista-detalle{display:block;animation:entra-ficha .3s cubic-bezier(.32,.72,0,1)}
+.panel.con-detalle .vista-detalle{display:block;animation:entra-ficha .24s cubic-bezier(.22,.9,.28,1)}
 @keyframes entra-ficha{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
 
 /* Con la ficha abierta el panel se dedica a ella */
@@ -424,7 +428,7 @@
     border-radius:var(--radio-xl) var(--radio-xl) 0 0;
     padding-bottom:env(safe-area-inset-bottom);
     transform:translateY(calc(100% - var(--asoma) - env(safe-area-inset-bottom)));
-    transition:transform .34s cubic-bezier(.32,.72,0,1),opacity .2s;
+    transition:transform .26s cubic-bezier(.22,.9,.28,1),opacity .18s;
   }
   .panel.media{transform:translateY(46dvh)}
   .panel.arriba{transform:translateY(0)}
